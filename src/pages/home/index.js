@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { v4 as uuid } from 'uuid';
 import {
   Button,
   Input,
@@ -18,34 +17,14 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { addProduct } from "../../redux/reducers/product";
+import { addProduct, deleteProduct } from "../../redux/reducers/product";
 import "./home.css";
 
 const { Paragraph } = Typography;
 const { TextArea } = Input;
 const { confirm } = Modal;
 
-const showConfirm = () => {
-  console.log('delete');
-  confirm({
-    title: "Are you sure you want to delete these product?",
-    icon: <ExclamationCircleOutlined />,
-    
-    onOk() {
-      console.log("OK");
-      
-
-    },
-
-    onCancel() {
-      console.log("Cancel");
-    },
-  });
-};
-
 const Home = () => {
-  const unique_id = uuid();
-  const small_id = unique_id.slice(0,1)
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
 
@@ -53,38 +32,50 @@ const Home = () => {
   const [productlist, setProductList] = useState([]);
   const [modal, setModal] = useState(false);
 
+  const showConfirm = (index) => {
+    console.log("delete");
+
+    confirm({
+      title: "Are you sure you want to delete these product?",
+      icon: <ExclamationCircleOutlined />,
+
+      onOk() {
+        console.log("OK");
+        dispatch(deleteProduct(index));
+      },
+
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   const onFinish = (values) => {
     console.log("Success:", values);
     form.resetFields();
     setModal(false);
     dispatch(addProduct(values));
   };
-  const onReset = () => {
-    console.log("inside reset ");
-    form.resetFields();
-    
-  };
 
   useEffect(() => {
     console.log("products", products);
     setProductList([{ title: "add" }, ...products]);
-    // let item = products[6];
-    // var removed = products.splice(0);
-    // console.log(removed);
   }, [products]);
 
   return (
     <div className="home">
       <div className="site-card-wrapper">
         <Row gutter={[24, 24]}>
-          {productlist?.map((product) => {
+          {productlist?.map((product, index) => {
             if (product?.title === "add") {
               return (
-                <Col xs={20} sm={16} md={12} lg={8} xl={6}>
+                <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
                   <Card
                     className="product-item"
                     bordered={false}
                     onClick={() => setModal(true)}
+                    // onClick={() => <addProductModal/>}
+
                   >
                     <PlusOutlined />
                     add product
@@ -93,9 +84,8 @@ const Home = () => {
               );
             } else {
               return (
-                <Col xs={20} sm={16} md={12} lg={8} xl={6}>
+                <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
                   <Card className="product-item">
-                    
                     {
                       <Image
                         preview={false}
@@ -128,7 +118,7 @@ const Home = () => {
                         shape="squre"
                         danger
                         icon={<DeleteOutlined />}
-                        onClick={showConfirm}
+                        onClick={() => showConfirm(index - 1)}
                       />
                     </div>
                     <div></div>
@@ -141,11 +131,6 @@ const Home = () => {
 
         {/* add product modal */}
         <Modal
-          xs={20}
-          sm={16}
-          md={12}
-          lg={8}
-          xl={4}
           visible={modal}
           title="Add Product"
           onCancel={() => {
@@ -226,7 +211,10 @@ const Home = () => {
                 span: 16,
               }}
             >
-              <Button style={{ margin: "0 20px 0 0" }} onClick={onReset}>
+              <Button
+                style={{ margin: "0 20px 0 0" }}
+                onClick={() => form.resetFields()}
+              >
                 cancel
               </Button>
               <Button type="primary" htmlType="submit">

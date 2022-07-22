@@ -6,32 +6,15 @@ export const productSlice = createSlice({
 
   reducers: {
     addProduct: (state, action) => {
-        console.log("action---------",action);
       return [...state, action.payload];
+    },
+
+    deleteProduct: (state, action) => {
+      return state.filter((element, index) => index !== action.payload);
     },
   },
 });
 
-export const { addProduct } = productSlice.actions;
-// export const selectProduct = (state) => state;
+export const { addProduct, deleteProduct } = productSlice.actions;
+
 export default productSlice.reducer;
-
-// import { getData, putData } from "../actions/action"
-// const initialState = []
-
-// const productReducer = (state = initialState , action) => {
-//   switch (action.type) {
-//       case getData:
-//           return{
-//               ...state,
-//               numberOfProduct:state
-//           }
-//           case putData:
-//             return{
-//                 updatedState:state.value
-//             }
-//       default:
-//           return state
-//   }
-// }
-// export default productReducer;
