@@ -1,52 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Card, Col, Row, Modal, Typography, Image} from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { deleteProduct } from "../../redux/reducers/product";
+import { useSelector } from "react-redux";
+import { Card, Col, Row } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import "./home.css";
 import AddProductModal from "../../components/AddProductModal";
-
-const { Paragraph } = Typography;
-const { confirm } = Modal;
+import ProductCard from "../../components/ProductCard";
 
 const Home = (props) => {
-
-  const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
 
   const [productlist, setProductList] = useState([]);
   const [modal, setModal] = useState(false);
-  const [index, setIndex] = useState(null);
-  const [productObj, setProductObj] = useState(null)
-
-  const showConfirm = (index) => {
-    console.log("delete");
-
-    confirm({
-      title: "Are you sure you want to delete these product?",
-      icon: <ExclamationCircleOutlined />,
-
-      onOk() {
-        console.log("OK");
-        dispatch(deleteProduct(index));
-      },
-
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-  
-  const onEdit = (obj, i) => {
-    setModal(true);
-    setIndex(i);
-    setProductObj(obj);
-  };
 
   useEffect(() => {
     console.log("products", products);
@@ -61,11 +25,10 @@ const Home = (props) => {
             if (product?.title === "add") {
               return (
                 <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-                  {}
                   <Card
-                    className = "product-item"
-                    bordered = {false}
-                    onClick = {() => setModal(true)}
+                    className="product-item"
+                    bordered={false}
+                    onClick={() => setModal(true)}
                   >
                     <PlusOutlined />
                   </Card>
@@ -74,43 +37,10 @@ const Home = (props) => {
             } else {
               return (
                 <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-                  <Card className="product-item">
-                    {
-                      <Image
-                        preview={false}
-                        className="img"
-                        src={require("../../assets/Mangoes.png")}
-                        style={{
-                          width: "100%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          minHeight: "150px",
-                        }}
-                      />
-                    }
-                    <div className="texts">
-                      <h2>{product.name}</h2>
-                      <p className="price">₹{product.price}</p>
-                      <Paragraph ellipsis={{ rows: 2 }}>
-                        {product.desc}
-                      </Paragraph>
-
-                      <Button
-                        type="primary"
-                        shape="squre"
-                        style={{ margin: "0 20px 0 0" }}
-                        icon={<EditOutlined />}
-                        onClick={() => onEdit(product, index-1)}
-                      />
-                      <Button
-                        type="primary"
-                        shape="squre"
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => showConfirm(index - 1)}
-                      />
-                    </div>
-                  </Card>
+                  <ProductCard
+                    index={index}
+                    data={product}
+                  />
                 </Col>
               );
             }
@@ -120,11 +50,7 @@ const Home = (props) => {
           isVisible={modal}
           onClose={() => {
             setModal(false);
-            setProductObj(null);
-            setIndex(null)
           }}
-          data={productObj}
-          index={index}
         />
       </div>
     </div>

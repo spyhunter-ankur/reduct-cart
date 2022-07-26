@@ -1,0 +1,30 @@
+.ant-card-body {
+  margin: 0 !important;
+  padding: 0px !important;
+  width: max-content;
+}
+.product-item {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    min-height: 150px;
+    height: 100%;
+    border: 0px;
+  }
+.details{
+  padding: 0 15px 15px 15px;
+}
+.img {
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+.ant-card-bordered {
+  border: 0px solid #f0f0f0 !important;
+}
+.ant-image-preview-operations-operation:not(:first-child) {
+  display: block;
+}
