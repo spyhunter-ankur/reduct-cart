@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Input, Modal, Form } from "antd";
-import { addProduct } from "../../redux/reducers/product";
+import { addProduct, editProduct } from "../../redux/reducers/product";
+
 
 const { TextArea } = Input;
 const AddProductModal = (props) => {
@@ -12,21 +13,18 @@ const AddProductModal = (props) => {
   const onFinish = (values) => {
     console.log("Success:", values);
     form.resetFields();
-    dispatch(addProduct(values));
+    props.data ? dispatch(editProduct({data:values ,index:props.index})) : dispatch(addProduct(values));
     props.onClose();
   };
-  const onClick = () => {
-    form.resetFields();
-    props.onClose();  
-  };
+
+  useEffect(() => {
+    props.isVisible ? form.setFieldsValue(props.data) : form.resetFields();
+  }, [props.isVisible]);
 
   return (
     <Modal
       title="Add Product Modal"
       visible={props.isVisible}
-      onOk={() => {
-        props.onClose();
-      }}
       onCancel={() => {
         props.onClose();
       }}
@@ -103,13 +101,15 @@ const AddProductModal = (props) => {
         >
           <Button
             style={{ margin: "0 20px 0 0" }}
-            onClick={onClick}
-            
+            onClick={() => {
+              form.resetFields();
+              props.onClose();
+            }}
           >
             cancel
           </Button>
           <Button type="primary" htmlType="submit">
-            Submit
+            Save
           </Button>
         </Form.Item>
       </Form>

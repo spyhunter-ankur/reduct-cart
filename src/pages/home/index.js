@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Card, Col, Row, Modal, Typography, Image } from "antd";
+import { Button, Card, Col, Row, Modal, Typography, Image} from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -12,15 +12,17 @@ import "./home.css";
 import AddProductModal from "../../components/AddProductModal";
 
 const { Paragraph } = Typography;
-
 const { confirm } = Modal;
 
 const Home = (props) => {
+
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
 
   const [productlist, setProductList] = useState([]);
   const [modal, setModal] = useState(false);
+  const [index, setIndex] = useState(null);
+  const [productObj, setProductObj] = useState(null)
 
   const showConfirm = (index) => {
     console.log("delete");
@@ -39,6 +41,12 @@ const Home = (props) => {
       },
     });
   };
+  
+  const onEdit = (obj, i) => {
+    setModal(true);
+    setIndex(i);
+    setProductObj(obj);
+  };
 
   useEffect(() => {
     console.log("products", products);
@@ -53,10 +61,11 @@ const Home = (props) => {
             if (product?.title === "add") {
               return (
                 <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
+                  {}
                   <Card
-                    className="product-item"
-                    bordered={false}
-                    onClick={() => setModal(true)}
+                    className = "product-item"
+                    bordered = {false}
+                    onClick = {() => setModal(true)}
                   >
                     <PlusOutlined />
                   </Card>
@@ -75,7 +84,6 @@ const Home = (props) => {
                           width: "100%",
                           justifyContent: "center",
                           alignItems: "center",
-                          // display: "flex",
                           minHeight: "150px",
                         }}
                       />
@@ -92,6 +100,7 @@ const Home = (props) => {
                         shape="squre"
                         style={{ margin: "0 20px 0 0" }}
                         icon={<EditOutlined />}
+                        onClick={() => onEdit(product, index-1)}
                       />
                       <Button
                         type="primary"
@@ -101,19 +110,21 @@ const Home = (props) => {
                         onClick={() => showConfirm(index - 1)}
                       />
                     </div>
-                    <div></div>
                   </Card>
                 </Col>
               );
             }
           })}
         </Row>
-
         <AddProductModal
           isVisible={modal}
           onClose={() => {
             setModal(false);
+            setProductObj(null);
+            setIndex(null)
           }}
+          data={productObj}
+          index={index}
         />
       </div>
     </div>
