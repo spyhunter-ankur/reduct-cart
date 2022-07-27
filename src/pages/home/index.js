@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Card, Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import "./home.css";
+import "./home.scss";
 import AddProductModal from "../../components/AddProductModal";
 import ProductCard from "../../components/ProductCard";
 
@@ -18,41 +18,36 @@ const Home = (props) => {
   }, [products]);
 
   return (
-    <div className="home">
-      <div className="site-card-wrapper">
-        <Row gutter={[24, 24]}>
-          {productlist?.map((product, index) => {
-            if (product?.title === "add") {
-              return (
-                <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-                  <Card
-                    className="product-item"
-                    bordered={false}
-                    onClick={() => setModal(true)}
-                  >
-                    <PlusOutlined />
-                  </Card>
-                </Col>
-              );
-            } else {
-              return (
-                <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
-                  <ProductCard
-                    index={index}
-                    data={product}
-                  />
-                </Col>
-              );
-            }
-          })}
-        </Row>
-        <AddProductModal
-          isVisible={modal}
-          onClose={() => {
-            setModal(false);
-          }}
-        />
-      </div>
+    <div id="home">
+      <Row gutter={[24, 24]}>
+        {productlist?.map((product, index) => {
+          if (product?.title === "add") {
+            return (
+              <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
+                <Card
+                  className="product-item"
+                  bordered={false}
+                  onClick={() => setModal(true)}
+                >
+                  <PlusOutlined />
+                </Card>
+              </Col>
+            );
+          } else {
+            return (
+              <Col xs={20} sm={16} md={12} lg={8} xl={6} key={index}>
+                <ProductCard index={index} data={product} />
+              </Col>
+            );
+          }
+        })}
+      </Row>
+      <AddProductModal
+        isVisible={modal}
+        onClose={() => {
+          setModal(false);
+        }}
+      />
     </div>
   );
 };

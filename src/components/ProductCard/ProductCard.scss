@@ -1,0 +1,30 @@
+$height: 100%;
+$width: 100%;
+
+#productCard {
+  border-radius: 10px;
+  width: $width;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  min-height: 100%;
+  height: $height;
+  border: 0px;
+
+  .ant-card-body {
+    margin: 0 !important;
+    padding: 0px !important;
+    width: max-content;
+    .img {
+      height: $height;
+      width: $width;
+      justify-content: center;
+      align-items: center;
+      min-height: 150px;
+      border-radius: 10px 10px 0 0 ;
+    }
+    .details {
+      padding: 0 15px 15px 15px;
+    }
+  }
+}

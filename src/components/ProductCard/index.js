@@ -6,7 +6,7 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import "./productCard.css";
+import "./ProductCard.scss";
 import { deleteProduct } from "../../redux/reducers/product";
 import AddProductModal from "../AddProductModal";
 
@@ -35,17 +35,13 @@ const ProductCard = (props) => {
       },
     });
   };
-  //   console.log(props.data);
   const onEdit = (obj, i) => {
     setModal(true);
-    // setIndex(i);
-    // setProductObj(props.data);
   };
 
   return (
-    <div>
-      <Card className="product-item" bordered={false}>
-        
+    <>
+      <Card id="productCard" bordered={false}>
         {
           <Image
             preview={false}
@@ -54,24 +50,23 @@ const ProductCard = (props) => {
           />
         }
         <div className="details">
-        <h1>{props.data.name}</h1>
-        <h3 className="price">₹{props.data.price}</h3>
-        <Paragraph ellipsis={{ rows: 2 }}>{props.data.desc}</Paragraph>
-        
-        <Button
-          type="primary"
-          shape="squre"
-          style={{ margin: "0 20px 0 0" }}
-          icon={<EditOutlined />}
-          onClick={() => onEdit(props.data, props.index - 1)}
-        />
-        <Button
-          type="primary"
-          shape="squre"
-          danger
-          icon={<DeleteOutlined />}
-          onClick={() => showConfirm(props.index - 1)}
-        />
+          <h1>{props.data.name}</h1>
+          <h3 className="price">₹{props.data.price}</h3>
+          <Paragraph ellipsis={{ rows: 2 }}>{props.data.desc}</Paragraph>
+          <Button
+            type="primary"
+            shape="circle"
+            style={{ margin: "0 20px 0 0" }}
+            icon={<EditOutlined />}
+            onClick={() => onEdit(props.data, props.index - 1)}
+          />
+          <Button
+            type="primary"
+            shape="circle"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => showConfirm(props.index - 1)}
+          />
         </div>
       </Card>
       <AddProductModal
@@ -80,9 +75,9 @@ const ProductCard = (props) => {
           setModal(false);
         }}
         data={props.data}
-        index={props.index-1}
+        index={props.index - 1}
       />
-    </div>
+    </>
   );
 };
 
